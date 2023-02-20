@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/Axxes.NATS.CC/v17/.suo
+/Subscriber/bin/Debug/net7.0-windows/Shared.pdb
+/Subscriber/bin/Debug/net7.0-windows/Shared.dll
+/Subscriber/bin/Debug/net7.0-windows/Subscriber.dll
+/Subscriber/bin/Debug/net7.0-windows/Subscriber.pdb
+/Shared/bin/Debug/net7.0-windows/Shared.pdb
+/Shared/bin/Debug/net7.0-windows/Shared.dll
+/StreamPublisher/bin/Debug/net7.0-windows/Shared.dll
+/StreamPublisher/bin/Debug/net7.0-windows/Shared.pdb
+/StreamPublisher/bin/Debug/net7.0-windows/StreamPublisher.dll
+/StreamPublisher/bin/Debug/net7.0-windows/StreamPublisher.pdb
