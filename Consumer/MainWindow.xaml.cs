@@ -13,6 +13,7 @@ namespace Consumer
     public partial class MainWindow : Window
     {
         private IConnection? _connection = null;
+        private const string StreamName = "Axxes";
 
         public MainWindow() => InitializeComponent();
 
@@ -30,7 +31,7 @@ namespace Consumer
 
             options.AllowReconnect = true;
             options.AddConnectionStatusChangedEventHandler(ConnectionStatusEventHandler);
-            options.Url = "nats://localhost:4222";
+            options.Url = "nats://localhost:4221";
 
             _connection = ConnectionHelper.CreateConnection(options);
 
@@ -39,15 +40,17 @@ namespace Consumer
 
         private void BtnSubscribe_Click(object sender, RoutedEventArgs e)
         {
-            ConsumerConfiguration cc = ConsumerConfiguration.Builder()
-                .WithDurable("optional-durable-name")
+            var consumerConfiguration = ConsumerConfiguration.Builder()
+                .WithDurable("Sander")
                 .Build();
-            PushSubscribeOptions pso = PushSubscribeOptions.Builder()
-                .WithConfiguration(cc)
+
+            var options = PushSubscribeOptions.Builder()
+                .WithConfiguration(consumerConfiguration)
+                .WithStream(StreamName)
                 .Build();
 
             var jetStreamContext = _connection?.CreateJetStreamContext();
-            var result = jetStreamContext?.PushSubscribeAsync(TxtSubject.Text, GetMessageHandler(), false, pso);
+            var result = jetStreamContext?.PushSubscribeAsync(TxtSubject.Text, GetMessageHandler(), false, options);
 
             LstSubscriptions.Items.Add(TxtSubject.Text);
         }

@@ -33,7 +33,7 @@ namespace StreamPublisher
             var options = ConnectionFactory.GetDefaultOptions();
             options.AllowReconnect = true;
             options.AddConnectionStatusChangedEventHandler(ConnectionStatusEventHandler);
-            options.Url = $"nats://localhost:4222";
+            options.Url = $"nats://localhost:4221";
 
             _connection = ConnectionHelper.CreateConnection(options);
             _jetStreamManagement = _connection.CreateJetStreamManagementContext();
@@ -46,18 +46,21 @@ namespace StreamPublisher
             if (_connection?.State is not ConnState.CONNECTED)
                 return;
 
-            LblError.Visibility = Visibility.Hidden;
+            LblMessageFeedback.Visibility = Visibility.Hidden;
 
-            if (!_jetStreamManagement.GetStreams().Any(x => x.Config.Name.Equals(StreamName)))
+            var stream = _jetStreamManagement?.GetStreams().FirstOrDefault(x => x.Config.Name == StreamName)?.Config;
+            if (stream is null)
             {
-                var streamConfiguration = StreamConfiguration.Builder()
+                stream = StreamConfiguration.Builder()
                     .WithName(StreamName)
                     .WithStorageType(StorageType.File)
-                    .WithSubjects(TxtSubject.Text)
                     .Build();
 
-                _jetStreamManagement.AddStream(streamConfiguration);
+                _jetStreamManagement?.AddStream(stream);
             }
+
+            if (!stream.Subjects.Any(x => x == TxtSubject.Text))
+                stream.Subjects.Add(TxtSubject.Text);
 
             var header = new MsgHeader();
             var message = new Msg(TxtSubject.Text, header, Encoding.UTF8.GetBytes(TxtMessage.Text));
@@ -65,22 +68,22 @@ namespace StreamPublisher
             try
             {
                 PublishAck? pa = _connection?.CreateJetStreamContext().Publish(message);
-                LblError.Content = "Message published";
-                LblError.Visibility = Visibility.Visible;
-                LblError.Foreground = new SolidColorBrush(Colors.Green);
+                LblMessageFeedback.Content = "Message published";
+                LblMessageFeedback.Visibility = Visibility.Visible;
+                LblMessageFeedback.Foreground = new SolidColorBrush(Colors.Green);
             }
             catch (NATSNoRespondersException)
             {
-                LblError.Content = "Message not published, no clients are listening on this subject";
-                LblError.Visibility = Visibility.Visible;
-                LblError.Foreground = new SolidColorBrush(Colors.Red);
+                LblMessageFeedback.Content = "Message not published, no clients are listening on this subject";
+                LblMessageFeedback.Visibility = Visibility.Visible;
+                LblMessageFeedback.Foreground = new SolidColorBrush(Colors.Red);
 
             }
             catch (Exception exception)
             {
-                LblError.Content = $"Message not published. Exception: {exception.Message}";
-                LblError.Visibility = Visibility.Visible;
-                LblError.Foreground = new SolidColorBrush(Colors.Red);
+                LblMessageFeedback.Content = $"Message not published. Exception: {exception.Message}";
+                LblMessageFeedback.Visibility = Visibility.Visible;
+                LblMessageFeedback.Foreground = new SolidColorBrush(Colors.Red);
             }
         }
 

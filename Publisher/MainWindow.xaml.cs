@@ -29,16 +29,16 @@ namespace Publisher
             if (_connection?.State is not ConnState.CONNECTED)
                 return;
 
-            LblError.Visibility = Visibility.Hidden;
+            LblMessageFeedback.Visibility = Visibility.Hidden;
 
             var header = new MsgHeader();
             var message = new Msg(TxtSubject.Text, header, Encoding.UTF8.GetBytes(TxtMessage.Text));
 
             _connection.Publish(message);
 
-            LblError.Content = "Message published";
-            LblError.Visibility = Visibility.Visible;
-            LblError.Foreground = new SolidColorBrush(Colors.Green);
+            LblMessageFeedback.Content = "Message published";
+            LblMessageFeedback.Visibility = Visibility.Visible;
+            LblMessageFeedback.Foreground = new SolidColorBrush(Colors.Green);
         }
 
         private void Connect()
