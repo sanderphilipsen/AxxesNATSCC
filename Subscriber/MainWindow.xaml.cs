@@ -1,7 +1,6 @@
 ﻿using NATS.Client;
 using Shared;
 using System;
-using System.Text;
 using System.Windows;
 
 namespace Subscriber
@@ -11,8 +10,8 @@ namespace Subscriber
     /// </summary>
     public partial class MainWindow : Window
     {
-        private IConnection? _connection = null;
-        private const string QueueGroup = "FunctionalFullStack";
+        private readonly IConnection? _connection = null;
+
         public MainWindow() => InitializeComponent();
 
         private void BtnConnect_Click(object sender, RoutedEventArgs e)
@@ -25,19 +24,18 @@ namespace Subscriber
 
         private void Connect()
         {
-            var options = ConnectionFactory.GetDefaultOptions();
+            //Configure connection options
 
-            options.AddConnectionStatusChangedEventHandler(ConnectionStatusEventHandler);
-            options.AllowReconnect = true;
-            options.Url = $"nats://localhost:4222";
+            //Create the connection
 
-            _connection = ConnectionHelper.CreateConnection(options);
             UiHelper.UpdateConnectionStatus(_connection, ConnectionBorder, LblConnectionStatus, BtnConnect);
         }
 
         private void BtnSubscribe_Click(object sender, RoutedEventArgs e)
         {
-            var subscription = _connection?.SubscribeAsync(TxtSubject.Text, QueueGroup, GetMessageHandler());
+            // Subscribe to the entered subject
+            IAsyncSubscription? subscription = null;
+
             LstSubscriptions.DisplayMemberPath = "Subject";
             LstSubscriptions.SelectedValuePath = "Subject";
             LstSubscriptions.Items.Add(subscription);
@@ -45,21 +43,13 @@ namespace Subscriber
 
         private void Unsubscribe_Click(object sender, RoutedEventArgs e)
         {
-            var subscription = LstSubscriptions.SelectedItems[0] as IAsyncSubscription;
-            subscription?.Unsubscribe();
-            LstSubscriptions.Items.Remove(subscription);
+            //  Unsubscribe   
         }
 
-        private EventHandler<MsgHandlerEventArgs> GetMessageHandler()
-            => (sender, args) =>
-            {
-                var message = Encoding.UTF8.GetString(args.Message.Data);
-
-                Dispatcher.Invoke((Action)(() =>
-                {
-                    LstMessages.Items.Insert(0, message);
-                }));
-            };
+        //private EventHandler<MsgHandlerEventArgs> GetMessageHandler()
+        //{
+        //  Return a eventHandler and add incoming messages to LstMessages listbox 
+        //}
 
         private void ConnectionStatusEventHandler(object? obj, EventArgs args)
             => Dispatcher.Invoke((Action)(() =>

@@ -1,7 +1,6 @@
 ﻿using NATS.Client;
 using Shared;
 using System;
-using System.Text;
 using System.Windows;
 using System.Windows.Media;
 
@@ -12,7 +11,7 @@ namespace Publisher
     /// </summary>
     public partial class MainWindow : Window
     {
-        private IConnection? _connection = null;
+        private readonly IConnection? _connection = null;
 
         public MainWindow() => InitializeComponent();
 
@@ -24,33 +23,27 @@ namespace Publisher
                 Connect();
         }
 
+        private void Connect()
+        {
+            //Configure connection options
+
+            //Create the connection
+
+            UiHelper.UpdateConnectionStatus(_connection, ConnectionBorder, LblConnectionStatus, BtnConnect);
+        }
+
         private void BtnPublish_Click(object sender, RoutedEventArgs e)
         {
             if (_connection?.State is not ConnState.CONNECTED)
                 return;
 
-            LblError.Visibility = Visibility.Hidden;
+            LblPublishFeedback.Visibility = Visibility.Hidden;
 
-            var header = new MsgHeader();
-            var message = new Msg(TxtSubject.Text, header, Encoding.UTF8.GetBytes(TxtMessage.Text));
+            // Configure the message and publish 
 
-            _connection.Publish(message);
-
-            LblError.Content = "Message published";
-            LblError.Visibility = Visibility.Visible;
-            LblError.Foreground = new SolidColorBrush(Colors.Green);
-        }
-
-        private void Connect()
-        {
-            var options = ConnectionFactory.GetDefaultOptions();
-            options.AllowReconnect = true;
-            options.AddConnectionStatusChangedEventHandler(ConnectionStatusEvent);
-            options.Url = $"nats://localhost:4222";
-
-            _connection = ConnectionHelper.CreateConnection(options);
-
-            UiHelper.UpdateConnectionStatus(_connection, ConnectionBorder, LblConnectionStatus, BtnConnect);
+            LblPublishFeedback.Content = "Message published";
+            LblPublishFeedback.Visibility = Visibility.Visible;
+            LblPublishFeedback.Foreground = new SolidColorBrush(Colors.Green);
         }
 
         private void ConnectionStatusEvent(object? obj, EventArgs args)
