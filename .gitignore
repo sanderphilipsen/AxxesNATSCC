@@ -475,3 +475,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+/.vs/Axxes.NATS.CC/v17/.suo
+/Consumer/obj/project.assets.json
+/Consumer/obj/project.nuget.cache
