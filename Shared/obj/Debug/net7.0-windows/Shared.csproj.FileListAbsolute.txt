@@ -1,0 +1,12 @@
+C:\Users\sphilipsen\Projects\Axxes\NATS\Demo\NATS\Axxes.NATS.CC\Shared\bin\Debug\net7.0-windows\Shared.deps.json
+C:\Users\sphilipsen\Projects\Axxes\NATS\Demo\NATS\Axxes.NATS.CC\Shared\bin\Debug\net7.0-windows\Shared.dll
+C:\Users\sphilipsen\Projects\Axxes\NATS\Demo\NATS\Axxes.NATS.CC\Shared\bin\Debug\net7.0-windows\Shared.pdb
+C:\Users\sphilipsen\Projects\Axxes\NATS\Demo\NATS\Axxes.NATS.CC\Shared\obj\Debug\net7.0-windows\Shared.csproj.AssemblyReference.cache
+C:\Users\sphilipsen\Projects\Axxes\NATS\Demo\NATS\Axxes.NATS.CC\Shared\obj\Debug\net7.0-windows\Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sphilipsen\Projects\Axxes\NATS\Demo\NATS\Axxes.NATS.CC\Shared\obj\Debug\net7.0-windows\Shared.AssemblyInfoInputs.cache
+C:\Users\sphilipsen\Projects\Axxes\NATS\Demo\NATS\Axxes.NATS.CC\Shared\obj\Debug\net7.0-windows\Shared.AssemblyInfo.cs
+C:\Users\sphilipsen\Projects\Axxes\NATS\Demo\NATS\Axxes.NATS.CC\Shared\obj\Debug\net7.0-windows\Shared.csproj.CoreCompileInputs.cache
+C:\Users\sphilipsen\Projects\Axxes\NATS\Demo\NATS\Axxes.NATS.CC\Shared\obj\Debug\net7.0-windows\Shared.dll
+C:\Users\sphilipsen\Projects\Axxes\NATS\Demo\NATS\Axxes.NATS.CC\Shared\obj\Debug\net7.0-windows\refint\Shared.dll
+C:\Users\sphilipsen\Projects\Axxes\NATS\Demo\NATS\Axxes.NATS.CC\Shared\obj\Debug\net7.0-windows\Shared.pdb
+C:\Users\sphilipsen\Projects\Axxes\NATS\Demo\NATS\Axxes.NATS.CC\Shared\obj\Debug\net7.0-windows\ref\Shared.dll

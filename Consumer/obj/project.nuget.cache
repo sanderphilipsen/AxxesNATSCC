@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "pwqkWs5Sy3SKX1dFbeVWFw51SKWc27s5yIkSMaPsOf0WWCBKdIzZQeiFSsZgxcapzolm/bPn/t1HMrqOfHa8NQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\sphilipsen\\Projects\\Axxes\\NATS\\Demo\\NATS\\Axxes.NATS.CC\\Consumer\\Consumer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\sphilipsen\\.nuget\\packages\\nats.client\\1.0.3\\nats.client.1.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
