@@ -9,14 +9,9 @@ namespace Shared
         {
             ConnectionFactory connectionFactory = new();
 
-            //Configuration configuration = ReadConfiguration();
 
             options ??= ConnectionFactory.GetDefaultOptions();
 
-            //if (options.Url.Contains("0.0.0.0"))
-            //    options.Url = options.Url.Replace("0.0.0.0", "localhost");
-
-            //options.Url = $"nats://{configuration.Host}:{configuration.Port}";
             return connectionFactory.CreateConnection(options);
         }
 

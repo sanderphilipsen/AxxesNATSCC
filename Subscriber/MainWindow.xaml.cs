@@ -12,7 +12,7 @@ namespace Subscriber
     public partial class MainWindow : Window
     {
         private IConnection? _connection = null;
-        private const string QueueGroup = "FunctionalFullStack";
+
         public MainWindow() => InitializeComponent();
 
         private void BtnConnect_Click(object sender, RoutedEventArgs e)
@@ -37,7 +37,7 @@ namespace Subscriber
 
         private void BtnSubscribe_Click(object sender, RoutedEventArgs e)
         {
-            var subscription = _connection?.SubscribeAsync(TxtSubject.Text, QueueGroup, GetMessageHandler());
+            var subscription = _connection?.SubscribeAsync(TxtSubject.Text, GetMessageHandler());
             LstSubscriptions.DisplayMemberPath = "Subject";
             LstSubscriptions.SelectedValuePath = "Subject";
             LstSubscriptions.Items.Add(subscription);
