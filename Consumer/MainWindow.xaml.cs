@@ -41,18 +41,12 @@ namespace Consumer
         {
             LblException.Visibility = Visibility.Hidden;
 
-            ConsumerConfiguration cc = ConsumerConfiguration.Builder()
-                .WithDurable(Guid.NewGuid().ToString())
-                .Build();
-
-            PushSubscribeOptions options = PushSubscribeOptions.Builder()
-                .WithConfiguration(cc)
-                .Build();
+            //Configure consumer configuration with a durable and add to the subscribeOptions
 
             var jetStreamContext = _connection?.CreateJetStreamContext();
             try
             {
-                var subscription = jetStreamContext?.PushSubscribeAsync(TxtSubject.Text, GetMessageHandler(), true, options);
+                // PushSubscribe to the subject
                 LstSubscriptions.Items.Add(TxtSubject.Text);
             }
             catch (Exception exception)
