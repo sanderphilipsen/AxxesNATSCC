@@ -29,7 +29,7 @@ namespace Subscriber
 
             options.AddConnectionStatusChangedEventHandler(ConnectionStatusEventHandler);
             options.AllowReconnect = true;
-            options.Url = $"nats://localhost:4222";
+            options.Url = $"nats://localhost:4221";
 
             _connection = ConnectionHelper.CreateConnection(options);
             UiHelper.UpdateConnectionStatus(_connection, ConnectionBorder, LblConnectionStatus, BtnConnect);
@@ -55,16 +55,16 @@ namespace Subscriber
             {
                 var message = Encoding.UTF8.GetString(args.Message.Data);
 
-                Dispatcher.Invoke((Action)(() =>
+                Dispatcher.Invoke(() =>
                 {
                     LstMessages.Items.Insert(0, message);
-                }));
+                });
             };
 
         private void ConnectionStatusEventHandler(object? obj, EventArgs args)
-            => Dispatcher.Invoke((Action)(() =>
+            => Dispatcher.Invoke(() =>
             {
                 UiHelper.UpdateConnectionStatus(_connection, ConnectionBorder, LblConnectionStatus, BtnConnect);
-            }));
+            });
     }
 }

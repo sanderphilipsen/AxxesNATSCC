@@ -6,7 +6,7 @@ namespace Shared
 {
     public static class UiHelper
     {
-        public static void UpdateConnectionStatus(IConnection connection, Border border, Label label, Button button)
+        public static void UpdateConnectionStatus(IConnection? connection, Border border, Label label, Button button)
         {
             switch (connection?.State)
             {
