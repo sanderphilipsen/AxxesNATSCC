@@ -30,7 +30,7 @@ namespace Shared
 
         private static void UpdateConnectionStatusControls(ConnectionStatus connectionStatus, Border border, Label label, Button button)
         {
-            label.Content = connectionStatus.ButtonConnectText;
+            label.Content = connectionStatus.Status;
             border.BorderBrush = new SolidColorBrush(connectionStatus.Color);
             button.Content = connectionStatus.ButtonConnectText;
         }

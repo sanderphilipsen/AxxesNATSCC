@@ -28,8 +28,6 @@ namespace Subscriber
             var options = ConnectionFactory.GetDefaultOptions();
 
             options.AddConnectionStatusChangedEventHandler(ConnectionStatusEventHandler);
-            options.AllowReconnect = true;
-            options.Url = $"nats://localhost:4222";
 
             _connection = ConnectionHelper.CreateConnection(options);
             UiHelper.UpdateConnectionStatus(_connection, ConnectionBorder, LblConnectionStatus, BtnConnect);

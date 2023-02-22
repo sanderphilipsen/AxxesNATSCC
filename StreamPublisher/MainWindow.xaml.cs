@@ -2,6 +2,8 @@
 using NATS.Client.JetStream;
 using Shared;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -16,6 +18,7 @@ namespace StreamPublisher
     {
         private IConnection? _connection = null;
         private IJetStreamManagement _jetStreamManagement;
+        private List<string> _subjects = new();
         private const string StreamName = "Axxes";
 
         public MainWindow() => InitializeComponent();
@@ -31,9 +34,7 @@ namespace StreamPublisher
         private void Connect()
         {
             var options = ConnectionFactory.GetDefaultOptions();
-            options.AllowReconnect = true;
             options.AddConnectionStatusChangedEventHandler(ConnectionStatusEventHandler);
-            options.Url = $"nats://localhost:4221";
 
             _connection = ConnectionHelper.CreateConnection(options);
             _jetStreamManagement = _connection.CreateJetStreamManagementContext();
@@ -43,24 +44,16 @@ namespace StreamPublisher
 
         private void BtnPublish_Click(object sender, RoutedEventArgs e)
         {
+            LblMessageFeedback.Visibility = Visibility.Hidden;
+
             if (_connection?.State is not ConnState.CONNECTED)
                 return;
 
-            LblMessageFeedback.Visibility = Visibility.Hidden;
-
-            var stream = _jetStreamManagement?.GetStreams().FirstOrDefault(x => x.Config.Name == StreamName)?.Config;
-            if (stream is null)
+            if (!_subjects.Any(subject => subject == TxtSubject.Text))
             {
-                stream = StreamConfiguration.Builder()
-                    .WithName(StreamName)
-                    .WithStorageType(StorageType.File)
-                    .Build();
-
-                _jetStreamManagement?.AddStream(stream);
+                _subjects.Add(TxtSubject.Text);
+                AddOrUpdateStream();
             }
-
-            if (!stream.Subjects.Any(x => x == TxtSubject.Text))
-                stream.Subjects.Add(TxtSubject.Text);
 
             var header = new MsgHeader();
             var message = new Msg(TxtSubject.Text, header, Encoding.UTF8.GetBytes(TxtMessage.Text));
@@ -68,16 +61,10 @@ namespace StreamPublisher
             try
             {
                 PublishAck? pa = _connection?.CreateJetStreamContext().Publish(message);
+
                 LblMessageFeedback.Content = "Message published";
                 LblMessageFeedback.Visibility = Visibility.Visible;
                 LblMessageFeedback.Foreground = new SolidColorBrush(Colors.Green);
-            }
-            catch (NATSNoRespondersException)
-            {
-                LblMessageFeedback.Content = "Message not published, no clients are listening on this subject";
-                LblMessageFeedback.Visibility = Visibility.Visible;
-                LblMessageFeedback.Foreground = new SolidColorBrush(Colors.Red);
-
             }
             catch (Exception exception)
             {
@@ -92,5 +79,40 @@ namespace StreamPublisher
             {
                 UiHelper.UpdateConnectionStatus(_connection, ConnectionBorder, LblConnectionStatus, BtnConnect);
             }));
+
+        private void BtnPurgeStream_Click(object sender, RoutedEventArgs e)
+        {
+            _jetStreamManagement.PurgeStream(StreamName);
+        }
+
+        private void BtnDeleteStream_Click(object sender, RoutedEventArgs e)
+        {
+            _jetStreamManagement.DeleteStream(StreamName);
+            _subjects.Clear(); ;
+
+        }
+
+        private void AddOrUpdateStream()
+        {
+            var streamExists = _jetStreamManagement?.GetStreams().Any(x => x.Config.Name == StreamName) ?? false;
+            if (!streamExists)
+            {
+                var streamConfig = StreamConfiguration.Builder()
+                    .WithName(StreamName)
+                    .WithSubjects(_subjects)
+                    .WithStorageType(StorageType.File)
+                    .Build();
+
+                _jetStreamManagement?.AddStream(streamConfig);
+            }
+            else
+            {
+                var streamConfig = StreamConfiguration.Builder()
+                    .WithName(StreamName)
+                    .WithSubjects(_subjects)
+                    .Build();
+                _jetStreamManagement?.UpdateStream(streamConfig);
+            }
+        }
     }
 }

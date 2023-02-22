@@ -8,15 +8,9 @@ namespace Shared
         public static IConnection CreateConnection(Options? options = null)
         {
             ConnectionFactory connectionFactory = new();
-
-            //Configuration configuration = ReadConfiguration();
-
             options ??= ConnectionFactory.GetDefaultOptions();
 
-            //if (options.Url.Contains("0.0.0.0"))
-            //    options.Url = options.Url.Replace("0.0.0.0", "localhost");
-
-            //options.Url = $"nats://{configuration.Host}:{configuration.Port}";
+            options.Url = "nats://localhost:4221";
             return connectionFactory.CreateConnection(options);
         }
 
@@ -25,6 +19,7 @@ namespace Shared
             options.DisconnectedEventHandler += handler;
             options.ClosedEventHandler += handler;
             options.ReconnectedEventHandler += handler;
+            options.AllowReconnect = true;
             return options;
         }
     }

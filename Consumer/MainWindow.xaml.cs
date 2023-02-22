@@ -2,8 +2,10 @@
 using NATS.Client.JetStream;
 using Shared;
 using System;
+using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Consumer
 {
@@ -28,10 +30,7 @@ namespace Consumer
         private void Connect()
         {
             var options = ConnectionFactory.GetDefaultOptions();
-
-            options.AllowReconnect = true;
             options.AddConnectionStatusChangedEventHandler(ConnectionStatusEventHandler);
-            options.Url = "nats://localhost:4221";
 
             _connection = ConnectionHelper.CreateConnection(options);
 
@@ -40,19 +39,29 @@ namespace Consumer
 
         private void BtnSubscribe_Click(object sender, RoutedEventArgs e)
         {
-            var consumerConfiguration = ConsumerConfiguration.Builder()
-                .WithDurable("Sander")
+            LblException.Visibility = Visibility.Hidden;
+
+            ConsumerConfiguration cc = ConsumerConfiguration.Builder()
+                .WithDurable(Guid.NewGuid().ToString())
                 .Build();
 
-            var options = PushSubscribeOptions.Builder()
-                .WithConfiguration(consumerConfiguration)
-                .WithStream(StreamName)
+            PushSubscribeOptions options = PushSubscribeOptions.Builder()
+                .WithConfiguration(cc)
                 .Build();
 
             var jetStreamContext = _connection?.CreateJetStreamContext();
-            var result = jetStreamContext?.PushSubscribeAsync(TxtSubject.Text, GetMessageHandler(), false, options);
+            try
+            {
+                var subscription = jetStreamContext?.PushSubscribeAsync(TxtSubject.Text, GetMessageHandler(), true, options);
+                LstSubscriptions.Items.Add(TxtSubject.Text);
+            }
+            catch (Exception exception)
+            {
+                LblException.Content = exception.Message;
+                LblException.Visibility = Visibility.Visible;
+                LblException.Foreground = new SolidColorBrush(Colors.Red);
+            }
 
-            LstSubscriptions.Items.Add(TxtSubject.Text);
         }
 
         private EventHandler<MsgHandlerEventArgs> GetMessageHandler()
@@ -70,7 +79,7 @@ namespace Consumer
 
         private void Unsubscribe_Click(object sender, RoutedEventArgs e)
         {
-            var subscription = LstSubscriptions.SelectedItems[0] as IAsyncSubscription;
+            var subscription = e.Source as IAsyncSubscription;
             subscription?.Unsubscribe();
             LstSubscriptions.Items.Remove(subscription);
         }

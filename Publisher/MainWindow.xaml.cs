@@ -44,9 +44,7 @@ namespace Publisher
         private void Connect()
         {
             var options = ConnectionFactory.GetDefaultOptions();
-            options.AllowReconnect = true;
             options.AddConnectionStatusChangedEventHandler(ConnectionStatusEvent);
-            options.Url = $"nats://localhost:4222";
 
             _connection = ConnectionHelper.CreateConnection(options);
 
