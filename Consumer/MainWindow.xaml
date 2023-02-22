@@ -41,11 +41,6 @@
                     <Label Grid.Column="1"  Grid.Row="5" Margin="0,0"  FontFamily="Courier new" Name="LblMessages" FontSize="12" HorizontalContentAlignment="Left" Content="Messages:"/>
 
                     <ListBox Name="LstSubscriptions" MaxHeight="100"   Grid.Column ="0" Grid.Row="6" d:ItemsSource="{d:SampleData ItemCount=5}">
-                        <ListBox.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Unsubscribe" Click="Unsubscribe_Click"/>
-                            </ContextMenu>
-                        </ListBox.ContextMenu>
                     </ListBox>
 
                     <ListBox Grid.Column="0" MaxHeight="100" Name="LstMessages" Grid.Row="6" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="2" Margin="390,0,2,0" Grid.RowSpan="2"/>

@@ -77,13 +77,6 @@ namespace Consumer
             };
         }
 
-        private void Unsubscribe_Click(object sender, RoutedEventArgs e)
-        {
-            var subscription = e.Source as IAsyncSubscription;
-            subscription?.Unsubscribe();
-            LstSubscriptions.Items.Remove(subscription);
-        }
-
         private void ConnectionStatusEventHandler(object? obj, EventArgs args)
             => Dispatcher.Invoke((Action)(() =>
             {
