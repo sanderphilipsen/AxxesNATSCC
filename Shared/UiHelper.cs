@@ -6,7 +6,7 @@ namespace Shared
 {
     public static class UiHelper
     {
-        public static void UpdateConnectionStatus(IConnection connection, Border border, Label label, Button button)
+        public static void UpdateConnectionStatus(IConnection? connection, Border border, Label label, Button button)
         {
             switch (connection?.State)
             {
@@ -30,7 +30,7 @@ namespace Shared
 
         private static void UpdateConnectionStatusControls(ConnectionStatus connectionStatus, Border border, Label label, Button button)
         {
-            label.Content = connectionStatus.ButtonConnectText;
+            label.Content = connectionStatus.Status;
             border.BorderBrush = new SolidColorBrush(connectionStatus.Color);
             button.Content = connectionStatus.ButtonConnectText;
         }

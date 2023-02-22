@@ -11,7 +11,7 @@ namespace Publisher
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IConnection? _connection = null;
+        private IConnection? _connection = null;
 
         public MainWindow() => InitializeComponent();
 
