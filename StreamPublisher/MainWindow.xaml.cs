@@ -87,7 +87,7 @@ namespace StreamPublisher
 
         private void AddOrUpdateStream()
         {
-            //Create a stream with entered subject or update stream with new subject if already exists
+            //Create a stream with storage type file and the entered subject or update stream with new subject
         }
 
         private void ConnectionStatusEventHandler(object? obj, EventArgs args)
