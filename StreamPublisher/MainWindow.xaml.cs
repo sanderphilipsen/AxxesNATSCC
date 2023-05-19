@@ -2,7 +2,6 @@
 using NATS.Client.JetStream;
 using Shared;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -89,7 +88,6 @@ namespace StreamPublisher
         {
             _jetStreamManagement.DeleteStream(StreamName);
             _subjects.Clear(); ;
-
         }
 
         private void AddOrUpdateStream()
