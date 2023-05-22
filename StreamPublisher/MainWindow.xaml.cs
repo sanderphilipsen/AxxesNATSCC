@@ -49,7 +49,7 @@ namespace StreamPublisher
             if (_connection?.State is not ConnState.CONNECTED)
                 return;
 
-            if (!_subjects.Any(subject => subject == TxtSubject.Text))
+            if (_subjects.All(subject => subject != TxtSubject.Text))
             {
                 _subjects.Add(TxtSubject.Text);
                 AddOrUpdateStream();
