@@ -34,7 +34,7 @@ namespace Publisher
             var header = new MsgHeader();
             var message = new Msg(TxtSubject.Text, header, Encoding.UTF8.GetBytes(TxtMessage.Text));
 
-            _connection.Publish(message);
+            var res = _connection.Request(message);
 
             LblMessageFeedback.Content = "Message published";
             LblMessageFeedback.Visibility = Visibility.Visible;
@@ -44,6 +44,10 @@ namespace Publisher
         private void Connect()
         {
             var options = ConnectionFactory.GetDefaultOptions();
+
+            options.User = "sander";
+            options.Password = "demo";
+
             options.AddConnectionStatusChangedEventHandler(ConnectionStatusEvent);
 
             _connection = ConnectionHelper.CreateConnection(options);

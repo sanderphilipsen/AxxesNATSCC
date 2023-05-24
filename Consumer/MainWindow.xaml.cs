@@ -43,6 +43,7 @@ namespace Consumer
 
             ConsumerConfiguration cc = ConsumerConfiguration.Builder()
                 .WithDurable(Guid.NewGuid().ToString())
+                .WithReplayPolicy(ReplayPolicy.Original)
                 .Build();
 
             PushSubscribeOptions options = PushSubscribeOptions.Builder()
