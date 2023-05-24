@@ -31,7 +31,8 @@ namespace Consumer
         {
             var options = ConnectionFactory.GetDefaultOptions();
             options.AddConnectionStatusChangedEventHandler(ConnectionStatusEventHandler);
-
+            options.User = "John";
+            options.Password = "admin";
             _connection = ConnectionHelper.CreateConnection(options);
 
             UiHelper.UpdateConnectionStatus(_connection, ConnectionBorder, LblConnectionStatus, BtnConnect);

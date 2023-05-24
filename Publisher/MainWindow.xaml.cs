@@ -34,7 +34,7 @@ namespace Publisher
             var header = new MsgHeader();
             var message = new Msg(TxtSubject.Text, header, Encoding.UTF8.GetBytes(TxtMessage.Text));
 
-            var res = _connection.Request(message);
+            _connection.Publish(message);
 
             LblMessageFeedback.Content = "Message published";
             LblMessageFeedback.Visibility = Visibility.Visible;

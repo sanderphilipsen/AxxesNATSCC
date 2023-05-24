@@ -18,7 +18,10 @@ namespace Subscriber
         private void BtnConnect_Click(object sender, RoutedEventArgs e)
         {
             if (BtnConnect.Content is "Disconnect")
+            {
                 _connection?.Close();
+                LstSubscriptions.Items.Clear();
+            }
             else
                 Connect();
         }
@@ -28,17 +31,28 @@ namespace Subscriber
             var options = ConnectionFactory.GetDefaultOptions();
 
             options.AddConnectionStatusChangedEventHandler(ConnectionStatusEventHandler);
-
+            options.User = "john";
+            options.Password = "demo";
             _connection = ConnectionHelper.CreateConnection(options);
             UiHelper.UpdateConnectionStatus(_connection, ConnectionBorder, LblConnectionStatus, BtnConnect);
         }
 
         private void BtnSubscribe_Click(object sender, RoutedEventArgs e)
         {
-            var subscription = _connection?.SubscribeAsync(TxtSubject.Text, QueueGroup, GetMessageHandler());
-            LstSubscriptions.DisplayMemberPath = "Subject";
-            LstSubscriptions.SelectedValuePath = "Subject";
-            LstSubscriptions.Items.Add(subscription);
+            LblFeedback.Content = "";
+            try
+            {
+                var subscription = _connection?.SubscribeAsync(TxtSubject.Text, QueueGroup, GetMessageHandler());
+                LstSubscriptions.DisplayMemberPath = "Subject";
+                LstSubscriptions.SelectedValuePath = "Subject";
+                if (subscription != null && subscription.IsValid)
+                    LstSubscriptions.Items.Add(subscription);
+
+            }
+            catch (Exception ex)
+            {
+                LblFeedback.Content = ex.Message;
+            }
         }
 
         private void Unsubscribe_Click(object sender, RoutedEventArgs e)
@@ -62,7 +76,7 @@ namespace Subscriber
         private void ConnectionStatusEventHandler(object? obj, EventArgs args)
             => Dispatcher.Invoke((Action)(() =>
             {
-                UiHelper.UpdateConnectionStatus(_connection, ConnectionBorder, LblConnectionStatus, BtnConnect);
+                UiHelper.UpdateConnectionStatus(_connection, ConnectionBorder, LblConnectionStatus, BtnConnect, LstSubscriptions);
             }));
     }
 }

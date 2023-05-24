@@ -16,6 +16,7 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition Height="30px"></RowDefinition>
                         <RowDefinition ></RowDefinition>
+                        <RowDefinition ></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
 
@@ -32,10 +33,14 @@
                     <TextBox Name="TxtSubject"  FontFamily="Courier new"  Grid.Row="3" Text="Enter the subject" Margin="5,2, 2,5" Grid.Column="0"></TextBox>
 
                     <Button BorderBrush="Black" Margin="5,2, 2,5" FontStyle="Italic" FontWeight="Bold" Background="White" Name="BtnSubscribe" Content="Subscribe"   BorderThickness="2" FontSize="20" FontFamily="Courier new" Grid.Row="3" Grid.Column="2" Click="BtnSubscribe_Click" ></Button>
-                    <Label Grid.Column="0"  Grid.Row="4" Margin="0,0"  FontFamily="Courier new" Name="LblSubscriptions" FontSize="12" HorizontalContentAlignment="Left" Content="Subscriptions:"/>
-                    <Label Grid.Column="1"  Grid.Row="4" Margin="0,0"  FontFamily="Courier new" Name="LblMessages" FontSize="12" HorizontalContentAlignment="Left" Content="Messages:"/>
 
-                    <ListBox Name="LstSubscriptions" MaxHeight="100"   Grid.Column ="0" Grid.Row="5" d:ItemsSource="{d:SampleData ItemCount=5}">
+                    <Label Foreground="Red"  Grid.ColumnSpan="3"  Grid.Row="4" Margin="0,0"  FontFamily="Courier new" Name="LblFeedback" FontSize="12" HorizontalContentAlignment="Left" Content=""/>
+
+
+                    <Label Grid.Column="0"  Grid.Row="5" Margin="0,0"  FontFamily="Courier new" Name="LblSubscriptions" FontSize="12" HorizontalContentAlignment="Left" Content="Subscriptions:"/>
+                    <Label Grid.Column="1"  Grid.Row="5" Margin="0,0"  FontFamily="Courier new" Name="LblMessages" FontSize="12" HorizontalContentAlignment="Left" Content="Messages:"/>
+
+                    <ListBox Name="LstSubscriptions" MaxHeight="100"   Grid.Column ="0" Grid.Row="6" d:ItemsSource="{d:SampleData ItemCount=5}">
                         <ListBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Unsubscribe" Click="Unsubscribe_Click"/>
@@ -43,7 +48,7 @@
                         </ListBox.ContextMenu>
                     </ListBox>
 
-                    <ListBox Grid.Column="0" MaxHeight="100" Name="LstMessages" Grid.Row="5" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="2" Margin="390,0,2,0" Grid.RowSpan="2"/>
+                    <ListBox Grid.Column="0" MaxHeight="100" Name="LstMessages" Grid.Row="6" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="2" Margin="390,0,2,0" Grid.RowSpan="2"/>
                         
 
                 </Grid>
